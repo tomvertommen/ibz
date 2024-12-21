@@ -1,0 +1,1 @@
+java "-Djava.util.logging.config.file=./config/logging.properties" -jar ./bin/ibz.jar
