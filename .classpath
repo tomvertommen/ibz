@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="ibz/src"/>
+	<classpathentry kind="lib" path="ibz/istack-commons-runtime-4.2.0.jar"/>
+	<classpathentry kind="lib" path="ibz/jakarta.activation.jar"/>
+	<classpathentry kind="lib" path="ibz/jakarta.xml.bind-api.jar"/>
+	<classpathentry kind="lib" path="ibz/javax.activation-1.2.0.jar"/>
+	<classpathentry kind="lib" path="ibz/javax.mail.jar"/>
+	<classpathentry kind="lib" path="ibz/jaxb-core-4.0.5.jar"/>
+	<classpathentry kind="lib" path="ibz/jaxb-runtime-4.0.5.jar"/>
+	<classpathentry kind="lib" path="ibz/jsoup-1.18.3.jar"/>
+	<classpathentry kind="output" path="ibz/bin"/>
+</classpath>

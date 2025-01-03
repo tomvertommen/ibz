@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -245,7 +244,12 @@ public class Ibz implements Runnable {
 		Calendar latestRequestDate = null;
 		Calendar earliestRegistrationDate = null;
 		Calendar latestRegistrationDate = null;
-		SortedMap<DateData, Integer> occPerDateData = new TreeMap<>();
+		
+		TreeMap<String, Integer> occPerData = new TreeMap<String, Integer>();
+		for(String dateOption : Utils.DATE_OPTIONS) {
+			occPerData.put(dateOption, 0);
+		}
+		
 		for(Bundle bundle : updates) {
 			Result currentResult = bundle.getNewResult();
 			earliestRequestDate = getEarliest(earliestRequestDate, currentResult.getRequestDate());
@@ -258,14 +262,54 @@ public class Ibz implements Runnable {
 				nrOfRefused++;
 			else
 				nrOfOther++;
-			DateData dateData = 
-					new DateData(
-							DateData.getPossibility(ourResult.getRequestDate(), currentResult.getRequestDate()), 
-							DateData.getPossibility(ourResult.getDecisionDate(), currentResult.getDecisionDate()));
-			if(occPerDateData.containsKey(dateData))
-				occPerDateData.put(dateData, occPerDateData.get(dateData) + 1);
-			else
-				occPerDateData.put(dateData, 1);
+			
+			Calendar ourRequestDate = ourResult.getRequestDate();
+			Calendar ourRegistrationDate = ourResult.getRegistrationDate();
+			Calendar resultRequestDate = currentResult.getRequestDate();
+			Calendar resultRegistrationDate = currentResult.getRegistrationDate();
+			String key = null;
+			if(resultRequestDate == null) {
+				if(resultRegistrationDate == null) {
+					key = Utils.DATE_OPTION.NO_REQ_DATE_NO_REG_DATE;
+				} else if(resultRegistrationDate.before(ourRegistrationDate)) {
+					key = Utils.DATE_OPTION.NO_REQ_DATE_EARLIER_REG_DATE;
+				} else if(resultRegistrationDate.compareTo(ourRegistrationDate) == 0) {
+					key = Utils.DATE_OPTION.NO_REQ_DATE_EQUAL_REG_DATE;
+				} else if(resultRegistrationDate.after(ourRegistrationDate)) {
+					key = Utils.DATE_OPTION.NO_REQ_DATE_LATER_REG_DATE;
+				}
+			} else if(resultRequestDate.before(ourRequestDate)) {
+				if(resultRegistrationDate == null) {
+					key = Utils.DATE_OPTION.EARLIER_REQ_DATE_NO_REG_DATE;
+				} else if(resultRegistrationDate.before(ourRegistrationDate)) {
+					key = Utils.DATE_OPTION.EARLIER_REQ_DATE_EARLIER_REG_DATE;
+				} else if(resultRegistrationDate.compareTo(ourRegistrationDate) == 0) {
+					key = Utils.DATE_OPTION.EARLIER_REQ_DATE_EQUAL_REG_DATE;
+				} else if(resultRegistrationDate.after(ourRegistrationDate)) {
+					key = Utils.DATE_OPTION.EARLIER_REQ_DATE_LATER_REG_DATE;
+				}
+			} else if(resultRequestDate.compareTo(ourRequestDate) == 0) {
+				if(resultRegistrationDate == null) {
+					key = Utils.DATE_OPTION.EQUAL_REQ_DATE_NO_REG_DATE;
+				} else if(resultRegistrationDate.before(ourRegistrationDate)) {
+					key = Utils.DATE_OPTION.EQUAL_REQ_DATE_EARLIER_REG_DATE;
+				} else if(resultRegistrationDate.compareTo(ourRegistrationDate) == 0) {
+					key = Utils.DATE_OPTION.EQUAL_REQ_DATE_EQUAL_REG_DATE;
+				} else if(resultRegistrationDate.after(ourRegistrationDate)) {
+					key = Utils.DATE_OPTION.EQUAL_REQ_DATE_LATER_REG_DATE;
+				}
+			} else if(resultRequestDate.after(ourRequestDate)) {
+				if(resultRegistrationDate == null) {
+					key = Utils.DATE_OPTION.LATER_REQ_DATE_NO_REG_DATE;
+				} else if(resultRegistrationDate.before(ourRegistrationDate)) {
+					key = Utils.DATE_OPTION.LATER_REQ_DATE_EARLIER_REG_DATE;
+				} else if(resultRegistrationDate.compareTo(ourRegistrationDate) == 0) {
+					key = Utils.DATE_OPTION.LATER_REQ_DATE_EQUAL_REG_DATE;
+				} else if(resultRegistrationDate.after(ourRegistrationDate)) {
+					key = Utils.DATE_OPTION.LATER_REQ_DATE_LATER_REG_DATE;
+				}
+			}
+			occPerData.put(key, occPerData.get(key) + 1);
 		}
 		
 		TableData td = new TableData();
@@ -279,7 +323,7 @@ public class Ibz implements Runnable {
 		content += Utils.render(td);
 		
 		td = new TableData();
-		for(Map.Entry<DateData, Integer> entry : occPerDateData.entrySet()) {
+		for(Map.Entry<String, Integer> entry : occPerData.entrySet()) {
 			if(entry.getValue() != 0)
 				td.addRow(new String[] {
 						entry.getKey().toString(),

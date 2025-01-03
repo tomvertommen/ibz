@@ -45,7 +45,45 @@ public class Utils {
 	
 	private static Logger logger = Logger.getLogger(Utils.class.getName());
 	
+	public static List<String> DATE_OPTIONS;
+	
+	public static class DATE_OPTION {
+		public static final String NO_REQ_DATE_NO_REG_DATE = "no request date and no registration date";
+		public static final String NO_REQ_DATE_EARLIER_REG_DATE = "no request date and registration date &lt;";
+		public static final String NO_REQ_DATE_EQUAL_REG_DATE = "no request date  and registration date =";
+		public static final String NO_REQ_DATE_LATER_REG_DATE = "no request date  and registration date &gt;";
+		public static final String EARLIER_REQ_DATE_NO_REG_DATE = "request date &lt; and no registration date ";
+		public static final String EARLIER_REQ_DATE_EARLIER_REG_DATE = "request date &lt; and registration date &lt;";
+		public static final String EARLIER_REQ_DATE_EQUAL_REG_DATE = "request date &lt; and registration date =";
+		public static final String EARLIER_REQ_DATE_LATER_REG_DATE = "request date &lt; and registration date &gt;";
+		public static final String EQUAL_REQ_DATE_NO_REG_DATE = "request date = and no registration date ";
+		public static final String EQUAL_REQ_DATE_EARLIER_REG_DATE = "request date = and registration date &lt;";
+		public static final String EQUAL_REQ_DATE_EQUAL_REG_DATE = "request date = and registration date =";
+		public static final String EQUAL_REQ_DATE_LATER_REG_DATE = "request date = and registration date &gt;";
+		public static final String LATER_REQ_DATE_NO_REG_DATE = "request date &gt; and no registration date ";
+		public static final String LATER_REQ_DATE_EARLIER_REG_DATE = "request date &gt; and registration date &lt;";
+		public static final String LATER_REQ_DATE_EQUAL_REG_DATE = "request date &gt; and registration date =";
+		public static final String LATER_REQ_DATE_LATER_REG_DATE = "request date &gt; and registration date &gt;";
+	}
+	
 	static {
+		DATE_OPTIONS = new ArrayList<String>();
+		DATE_OPTIONS.add(DATE_OPTION.NO_REQ_DATE_NO_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.NO_REQ_DATE_EARLIER_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.NO_REQ_DATE_EQUAL_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.NO_REQ_DATE_LATER_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.EARLIER_REQ_DATE_NO_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.EARLIER_REQ_DATE_EARLIER_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.EARLIER_REQ_DATE_EQUAL_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.EARLIER_REQ_DATE_LATER_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.EQUAL_REQ_DATE_NO_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.EQUAL_REQ_DATE_EARLIER_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.EQUAL_REQ_DATE_EQUAL_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.EQUAL_REQ_DATE_LATER_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.LATER_REQ_DATE_NO_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.LATER_REQ_DATE_EARLIER_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.LATER_REQ_DATE_EQUAL_REG_DATE);
+		DATE_OPTIONS.add(DATE_OPTION.LATER_REQ_DATE_LATER_REG_DATE);
 		mailProps.put("mail.smtp.auth", config.getMail().isMail_smtp_auth());
 		mailProps.put("mail.smtp.starttls.enable", config.getMail().getMail_smtp_starttls_enable());
 		mailProps.put("mail.smtp.host", config.getMail().getMail_smtp_host());
